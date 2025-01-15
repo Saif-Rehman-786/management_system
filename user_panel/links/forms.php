@@ -513,13 +513,13 @@
                   <i class="icon-arrow-right"></i>
                 </li>
                 <li class="nav-item">
-                  <a href="#">Forms</a>
+                  <a href="#">Book Appoitment</a>
                 </li>
                 <li class="separator">
                   <i class="icon-arrow-right"></i>
                 </li>
                 <li class="nav-item">
-                  <a href="#">Basic Form</a>
+                  <a href="#">Form</a>
                 </li>
               </ul>
             </div>
@@ -530,7 +530,7 @@
                     <div class="card-title">Form Elements</div>
                   </div>
                   <div class="card-body">
-                    <div class="row">
+                    <!-- <div class="row">
                       <div class="col-md-6 col-lg-4">
                         <div class="form-group">
                           <label for="email2">Email Address</label>
@@ -1326,7 +1326,7 @@
                           </select>
                         </div>
                       </div>
-                    </div>
+                    </div> -->
                   </div>
                   <div class="card-action">
                     <button class="btn btn-success">Submit</button>
