@@ -1,7 +1,7 @@
-<?php 
-
-
-
+<?php
+if (isset($_POST['sub'])) {
+    echo "<script>alert('ok')</script>";
+}
 
 
 
@@ -12,162 +12,171 @@
 
 
 
-
-
-
-
-
-
-
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Registration</title>
-
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
-
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-
-    <!-- Custom CSS -->
+    <title>Responsive Hospital Registration</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+        integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
         body {
-            background-color: #f8f9fa;
-            font-family: 'Roboto', sans-serif;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            margin: 0;
+            background-color: #f9f9f9;
         }
-        .registration-form {
-            background: #ffffff;
-            border-radius: 10px;
-            padding: 40px; /* Increased padding for a more spacious look */
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            width: 100%;
-            max-width: 450px;
+
+        .container {
+            background-color: #fff;
+            padding: 15px;
+            border-radius: 6px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            width: 320px;
+            max-width: 90%;
         }
-        .registration-form h2 {
-            font-size: 24px;
-            font-weight: 700;
-            color: #333;
-            margin-bottom: 20px;
+
+        h2 {
             text-align: center;
-        }
-        .form-group {
             margin-bottom: 15px;
+            color: #003366;
+            font-size: 18px;
         }
-        .form-control {
-            padding-left: 45px;
-            height: 45px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
+
+        .form-group {
+            margin-bottom: 10px;
+            position: relative;
         }
-        .form-control::placeholder {
-            color: #aaaa; /* Lightened placeholder text */
-            
+
+        label {
+            display: block;
+            margin-bottom: 3px;
+            font-weight: bold;
+            font-size: 12px;
+            color: #003366;
         }
-        .input-group-text {
-            background: #f1f1f1;
-            border: none;
-            color:rgb(121, 129, 137);
-            border-right: 1px solid #ddd;
+
+        .form-group input[type="text"],
+        .form-group input[type="email"],
+        .form-group input[type="password"],
+        .form-group select {
+            width: 100%;
+            padding: 8px 8px 8px 35px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 12px;
         }
-        .form-check-label {
+
+        .form-group i {
+            position: absolute;
+            left: 10px;
+            top: 65%;
+            transform: translateY(-50%);
+            color: #003366;
             font-size: 14px;
         }
-        .btn-primary {
-            background: #007bff;
+
+        #submitt {
+            background-color: #003366;
+            color: white;
+            padding: 8px 12px;
             border: none;
-            font-weight: 600;
-            transition: all 0.3s;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 14px;
         }
-        .btn-primary:hover {
-            background: #0056b3;
+
+        p {
+            margin-top: 10px;
+            font-size: 12px;
+            text-align: center;
+            color: #666;
         }
-        .form-actions a {
-            color: #007bff;
+
+        p a {
+            color: #003366;
             text-decoration: none;
+            font-weight: bold;
         }
-        .form-actions a:hover {
+
+        p a:hover {
             text-decoration: underline;
+            color: #001f4d;
         }
-        .form-check-inline {
-            margin-right: 15px;
+
+
+        #submitt:hover {
+            background-color: #001f4d;
         }
-        .text-muted {
-            font-size: 14px;
+
+
+        @media (max-width: 500px) {
+            .container {
+                padding: 10px;
+            }
         }
     </style>
 </head>
-<body>
 
-    <div class="registration-form">
-        <h2>User Registration</h2>
-        <form id="registration" method="post">
-            <!-- Full Name -->
-            <div class="form-group input-group">
-                <span class="input-group-text"><i class="fas fa-user"></i></span>
-                <input type="text" class="form-control" name="full_name" placeholder="Full Name" required>
-            </div>
-            <!-- Address -->
-            <div class="form-group input-group">
-                <span class="input-group-text"><i class="fas fa-map-marker-alt"></i></span>
-                <input type="text" class="form-control" name="address" placeholder="Address" required>
-            </div>
-            <!-- City -->
-            <div class="form-group input-group">
-                <span class="input-group-text"><i class="fas fa-city"></i></span>
-                <input type="text" class="form-control" name="city" placeholder="City" required>
-            </div>
-            <!-- Gender -->
+<body>
+    <div class="container">
+        <h2>Patient Registration</h2>
+        <form method="post">
             <div class="form-group">
-                <label class="form-label">Gender</label><br>
-                <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" id="female" name="gender" value="female">
-                    <label class="form-check-label" for="female">Female</label>
-                </div>
-                <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" id="male" name="gender" value="male">
-                    <label class="form-check-label" for="male">Male</label>
-                </div>
+                <label for="full_name">Full Name</label>
+                <i class="fas fa-user"></i>
+                <input type="text" id="full_name" placeholder="Enter your full name" required>
             </div>
-            <!-- Email -->
-            <div class="form-group input-group">
-                <span class="input-group-text"><i class="fas fa-envelope"></i></span>
-                <input type="email" class="form-control" name="email" placeholder="Email" required>
+            <div class="form-group">
+                <label for="address">Address</label>
+                <i class="fas fa-map-marker-alt"></i>
+                <input type="text" id="address" placeholder="Enter your address" required>
             </div>
-            <!-- Password -->
-            <div class="form-group input-group">
-                <span class="input-group-text"><i class="fas fa-lock"></i></span>
-                <input type="password" class="form-control" name="password" placeholder="Password" required>
+            <div class="form-group">
+                <label for="city">City</label>
+                <i class="fas fa-city"></i>
+                <input type="text" id="city" placeholder="Enter your city" required>
             </div>
-            <!-- Confirm Password -->
-            <div class="form-group input-group">
-                <span class="input-group-text"><i class="fas fa-lock"></i></span>
-                <input type="password" class="form-control" name="password_again" placeholder="Confirm Password" required>
+            <div class="form-group">
+                <label for="gender">Gender</label>
+                <i class="fas fa-venus-mars"></i>
+                <select id="gender" required>
+                    <option value="">Select Gender</option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                </select>
             </div>
-            <!-- Agreement -->
-            <div class="form-group form-check">
-                <input type="checkbox" class="form-check-input" id="agree" value="agree">
-                <label class="form-check-label" for="agree">I agree to the terms and conditions</label>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <i class="fas fa-envelope"></i>
+                <input type="email" id="email" placeholder="Enter your email" required>
             </div>
-            <!-- Submit -->
-            <div class="form-actions">
-                <p class="text-muted">Already have an account? <a href="login.php">Log in</a></p>
-                <button type="submit" class="btn btn-primary w-100">Submit</button>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <i class="fas fa-lock"></i>
+                <input type="password" id="password" placeholder="Enter your password" required>
             </div>
+            <div class="form-group">
+                <label for="confirm_password">Confirm Password</label>
+                <i class="fas fa-lock"></i>
+                <input type="password" id="confirm_password" placeholder="Confirm your password" required>
+
+
+
+            </div>
+            <p>Already have an account?<a href="">Login</a></p>
+       <input type="submit" name="sub" id="submitt">
         </form>
     </div>
-
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>
