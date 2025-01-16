@@ -14,20 +14,13 @@ if (isset($_POST["sub"])) {
 
     $run = mysqli_query($connection,$data);
     if (!$run) {
-        echo "data nahi gya";
+        echo "<script>alert('wrong')</script>";
     }
 
 
 }
 
-
-
-
 ?>
-
-
-
-
 
 
 <!DOCTYPE html>
