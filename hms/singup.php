@@ -1,15 +1,6 @@
 <?php
-if (isset($_POST['sub'])) {
-    echo "<script>alert('ok')</script>";
-}
-
-
-
+include("dbconnection.php");
 ?>
-
-
-
-
 
 
 <!DOCTYPE html>
@@ -134,22 +125,22 @@ if (isset($_POST['sub'])) {
             <div class="form-group">
                 <label for="full_name">Full Name</label>
                 <i class="fas fa-user"></i>
-                <input type="text" id="full_name" placeholder="Enter your full name" required>
+                <input name="fname" type="text" id="full_name" placeholder="Enter your full name" required>
             </div>
             <div class="form-group">
                 <label for="address">Address</label>
                 <i class="fas fa-map-marker-alt"></i>
-                <input type="text" id="address" placeholder="Enter your address" required>
+                <input name="address" type="text" id="address" placeholder="Enter your address" required>
             </div>
             <div class="form-group">
                 <label for="city">City</label>
                 <i class="fas fa-city"></i>
-                <input type="text" id="city" placeholder="Enter your city" required>
+                <input name="city" type="text" id="city" placeholder="Enter your city" required>
             </div>
             <div class="form-group">
                 <label for="gender">Gender</label>
                 <i class="fas fa-venus-mars"></i>
-                <select id="gender" required>
+                <select name="gen" id="gender" required>
                     <option value="">Select Gender</option>
                     <option value="male">Male</option>
                     <option value="female">Female</option>
@@ -158,25 +149,62 @@ if (isset($_POST['sub'])) {
             <div class="form-group">
                 <label for="email">Email</label>
                 <i class="fas fa-envelope"></i>
-                <input type="email" id="email" placeholder="Enter your email" required>
+                <input name="email" type="email" id="email" placeholder="Enter your email" required>
             </div>
             <div class="form-group">
                 <label for="password">Password</label>
                 <i class="fas fa-lock"></i>
-                <input type="password" id="password" placeholder="Enter your password" required>
+                <input name="pass" type="password" id="password" placeholder="Enter your password" required>
             </div>
             <div class="form-group">
                 <label for="confirm_password">Confirm Password</label>
                 <i class="fas fa-lock"></i>
-                <input type="password" id="confirm_password" placeholder="Confirm your password" required>
+                <input name="cpass" type="password" id="confirm_password" placeholder="Confirm your password" required>
 
 
 
             </div>
-            <p>Already have an account?<a href="">Login</a></p>
-       <input type="submit" name="sub" id="submitt">
+            <p>Already have an account?<a href=""> Login</a></p>
+            <input type="submit" name="sub" id="submitt" onclick="return check()">
         </form>
     </div>
+
+
+
+    <?php
+    if (isset($_POST['sub'])) {
+
+        $fullname = $_POST['fname'];
+        $address = $_POST['address'];
+        $city = $_POST['city'];
+        $gender = $_POST['gen'];
+        $email = $_POST['email'];
+        $password = $_POST['pass'];
+        $cpassword = $_POST['cpass'];
+
+
+
+        $insert = "INSERT INTO `user`(`name`, `address`, `city`, `gender`, `email`, `password`, `confirmpassword`) VALUES ('$fullname','$address','$city','$gender','$email','$password','$cpassword')";
+
+        // $query = mysqli_query($conn,$insert);
+
+        if($query){
+            echo "<script>alert('Registeration Successfully')</script>";
+            echo "<script>
+            window.location.href= 'login.php';
+            </script>";
+        }
+
+    }
+    ?>
+<script>
+
+
+
+</script>
+
+
+
 </body>
 
 </html>

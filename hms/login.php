@@ -1,24 +1,11 @@
 <?php
+include("dbconnection");
 session_start();
 
 
-if (isset($_POST["sub"])) {
-
-    $name = $_POST["username"];
-
-    $password = $_POST["password"];
-
-    $connection = mysqli_connect("localhost", "root", "", "e-project");
-
-    $data = "INSERT INTO `user_login`(`username`, `password`) VALUES ('$name','$password')";
-
-    $run = mysqli_query($connection,$data);
-    if (!$run) {
-        echo "<script>alert('wrong')</script>";
-    }
 
 
-}
+
 
 ?>
 
@@ -152,13 +139,27 @@ if (isset($_POST["sub"])) {
             </div>
             <!-- Submit Button -->
             <div class="d-grid">
-                <button type="submit" class="btn btn-primary" name="sub">Login</button>
+                <button type="submit" class="btn btn-primary" name="loginbtn">Login</button>
             </div>
         </form>
         <div class="login-footer">
             <p>Don't have an account yet? <a href="singup.php">Create an account</a></p>
         </div>
     </div>
+
+    <?php 
+    if(isset($_POST['loginbtn'])){
+        $username = $_POST['username'];
+        $password = $_POST['password'];
+        $q = "SELECT `name`, `password`, `confirmpassword` FROM `user` WHERE ";
+    }
+    
+    
+    
+    
+    
+    
+    ?>
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
