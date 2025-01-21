@@ -170,38 +170,27 @@ include("dbconnection.php");
     </div>
 
 
-
     <?php
-    if (isset($_POST['sub'])) {
+$conn = new mysqli("localhost", "root", "", "your_database_name");
 
-        $fullname = $_POST['fname'];
-        $address = $_POST['address'];
-        $city = $_POST['city'];
-        $gender = $_POST['gen'];
-        $email = $_POST['email'];
-        $password = $_POST['pass'];
-        $cpassword = $_POST['cpass'];
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $username = $_POST['username'];
+    $email = $_POST['email'];
+    $password = $_POST['password'];
 
-
-
-        $insert = "INSERT INTO `user`(`name`, `address`, `city`, `gender`, `email`, `password`, `confirmpassword`) VALUES ('$fullname','$address','$city','$gender','$email','$password','$cpassword')";
-
-        // $query = mysqli_query($conn,$insert);
-
-        if($query){
-            echo "<script>alert('Registeration Successfully')</script>";
-            echo "<script>
-            window.location.href= 'login.php';
-            </script>";
-        }
-
+    $query = "INSERT INTO users (username, email, password) VALUES ('$username', '$email', '$password')";
+    if ($conn->query($query)) {
+        echo "Account created successfully!";
+        header("Location: login.php");
+        exit;
+    } else {
+        echo "Error: " . $conn->error;
     }
-    ?>
-<script>
+}
+?>
 
 
 
-</script>
 
 
 

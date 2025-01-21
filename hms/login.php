@@ -152,9 +152,8 @@ session_start();
         $username = $_POST['username'];
         $password = $_POST['password'];
         $q = "SELECT `name`, `password`, `confirmpassword` FROM `user` WHERE ";
+        
     }
-    
-    
     
     
     
