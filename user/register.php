@@ -1,7 +1,6 @@
 <?php
-include("dbconnection.php");
+include("dbconnection.php"); // Ensure this file contains your DB connection setup
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -9,11 +8,12 @@ include("dbconnection.php");
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Responsive Hospital Registration</title>
+    <title>Patient Registration</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
         integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
+        /* CSS Styling */
         body {
             font-family: Arial, sans-serif;
             margin: 0;
@@ -104,16 +104,8 @@ include("dbconnection.php");
             color: #001f4d;
         }
 
-
         #submitt:hover {
             background-color: #001f4d;
-        }
-
-
-        @media (max-width: 500px) {
-            .container {
-                padding: 10px;
-            }
         }
     </style>
 </head>
@@ -121,7 +113,7 @@ include("dbconnection.php");
 <body>
     <div class="container">
         <h2>Patient Registration</h2>
-        <form method="post">
+        <form method="post" action="">
             <div class="form-group">
                 <label for="full_name">Full Name</label>
                 <i class="fas fa-user"></i>
@@ -160,40 +152,40 @@ include("dbconnection.php");
                 <label for="confirm_password">Confirm Password</label>
                 <i class="fas fa-lock"></i>
                 <input name="cpass" type="password" id="confirm_password" placeholder="Confirm your password" required>
-
-
-
             </div>
-            <p>Already have an account?<a href=""> Login</a></p>
-            <input type="submit" name="sub" id="submitt" onclick="return check()">
+            <p>Already have an account? <a href="login.php">Login</a></p>
+            <input type="submit" name="sub" id="submitt">
         </form>
     </div>
 
-
     <?php
-$conn = new mysqli("localhost", "root", "", "your_database_name");
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $fname = trim($_POST['fname']);
+        $address = trim($_POST['address']);
+        $city = trim($_POST['city']);
+        $gender = $_POST['gen'];
+        $email = trim($_POST['email']);
+        $password = $_POST['pass'];
+        $confirm_password = $_POST['cpass'];
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $username = $_POST['username'];
-    $email = $_POST['email'];
-    $password = $_POST['password'];
+        if ($password !== $confirm_password) {
+            echo "<script>alert('Passwords do not match. Please try again.');</script>";
+        } else {
+            $hashed_password = password_hash($password, PASSWORD_BCRYPT);
 
-    $query = "INSERT INTO users (username, email, password) VALUES ('$username', '$email', '$password')";
-    if ($conn->query($query)) {
-        echo "Account created successfully!";
-        header("Location: login.php");
-        exit;
-    } else {
-        echo "Error: " . $conn->error;
+            $stmt = $conn->prepare("INSERT INTO `user` (`name`, `address`, `city`, `gender`, `email`, `password`) VALUES (?, ?, ?, ?, ?, ?)");
+            $stmt->bind_param("ssssss", $fname, $address, $city, $gender, $email, $hashed_password);
+
+            if ($stmt->execute()) {
+                echo "<script>alert('Account created successfully!'); window.location.href='login.php';</script>";
+            } else {
+                echo "<script>alert('Error: Unable to register. Please try again later.');</script>";
+            }
+
+            $stmt->close();
+        }
     }
-}
-?>
-
-
-
-
-
-
+    ?>
 </body>
 
 </html>
