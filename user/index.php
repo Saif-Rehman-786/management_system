@@ -100,7 +100,7 @@
                 <a href="contact.php" class="nav-item nav-link">Logins</a>
               
             </div>
-            <a href="../hms/login.php" class="btn btn-primary rounded-0 py-4 px-lg-5 d-none d-lg-block">Appointment<i class="fa fa-arrow-right ms-3"></i></a>
+            <a href="./login.php" class="btn btn-primary rounded-0 py-4 px-lg-5 d-none d-lg-block">Appointment<i class="fa fa-arrow-right ms-3"></i></a>
         </div>
         
     </nav>

@@ -2,36 +2,41 @@
 include("dbconnection.php");
 session_start();
 
-// Handle login logic
-if (isset($_POST['loginbtn'])) {
-    $username = trim($_POST['username']);
-    $password = trim($_POST['password']);
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $email = $_POST['email'];
+    $password = $_POST['password'];
 
-    // Prepare and execute the query
-    $stmt = $conn->prepare("SELECT `id`, `password` FROM `user` WHERE `name` = ?");
-    $stmt->bind_param("s", $username);
-    $stmt->execute();
-    $result = $stmt->get_result();
+    // Fetch user from database
+    $query = "SELECT * FROM patient WHERE email = '$email'";
+    $result = $conn->query($query);
 
     if ($result->num_rows > 0) {
         $user = $result->fetch_assoc();
-
-        // Verify the password
+        // Verify password
         if (password_verify($password, $user['password'])) {
-            $_SESSION['user_id'] = $user['id'];
-            $_SESSION['username'] = $username;
-            header("Location: patient_dashboard.php");
+            $_SESSION['patient_id'] = $user['id'];
+            $_SESSION['patient_name'] = $user['name'];
+            header("Location: ../hms/html/index.php");
             exit();
         } else {
-            $error = "Invalid username or password.";
+            echo "<script>alert('Incorrect password.');</script>";
         }
     } else {
-        $error = "Invalid username or password.";
+        echo "<script>alert('Email not registered.');</script>";
     }
-
-    $stmt->close();
 }
 ?>
+
+
+
+
+
+
+
+
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -39,153 +44,138 @@ if (isset($_POST['loginbtn'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
-
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-
-    <!-- Font Awesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-
-    <!-- Custom CSS -->
     <style>
         body {
-            background: #f8f9fa;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0;
             font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f4f4f4;
         }
 
-        .login-card {
-            background: #fff;
+        .login-container {
+            background-color: #fff;
+            padding: 20px 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
             width: 100%;
             max-width: 400px;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         }
 
-        .login-card h5 {
-            font-size: 20px;
+        h2 {
+            text-align: center;
+            color: #003366;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #003366;
+            font-size: 14px;
             font-weight: bold;
-            color: #333;
-            margin-bottom: 15px;
-            text-align: center;
         }
 
-        .login-card p {
-            font-size: 14px;
-            color: #666;
-            margin-bottom: 20px;
-            text-align: center;
-        }
-
-        .form-control {
-            padding-left: 40px;
-            border: 1px solid #ddd;
+        input {
+            width: 85%;
+            padding: 10px 10px 10px 40px;
+            border: 1px solid #ccc;
             border-radius: 5px;
-        }
-
-        .input-group-text {
-            background: transparent;
-            border: none;
-            font-size: 18px;
-            color: #6c757d;
-        }
-
-        .btn-primary {
-            background: #007bff;
-            border: none;
-            transition: background 0.3s ease;
-        }
-
-        .btn-primary:hover {
-            background: #0056b3;
-        }
-
-        .login-footer {
-            color: #666;
-            text-align: center;
-            margin-top: 15px;
             font-size: 14px;
         }
 
-        .login-footer a {
-            color: #007bff;
-            text-decoration: none;
+        .form-group i {
+            position: absolute;
+            left: 10px;
+            top: 65%;
+            transform: translateY(-50%);
+            color: #003366;
+            font-size: 16px;
         }
 
-        .login-footer a:hover {
-            text-decoration: underline;
-        }
-
-        .forgot-password {
-            font-size: 14px;
-            text-align: right;
-            margin-bottom: 10px;
-        }
-
-        .forgot-password a {
-            color: #007bff;
-            text-decoration: none;
-        }
-
-        .forgot-password a:hover {
-            text-decoration: underline;
-        }
-
-        .alert-danger {
-            color: #842029;
-            background-color: #f8d7da;
-            border-color: #f5c2c7;
+        button {
+            width: 100%;
             padding: 10px;
+            background-color: #003366;
+            color: white;
+            border: none;
             border-radius: 5px;
-            margin-bottom: 20px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #001f4d;
+        }
+
+        p {
+            text-align: center;
+            font-size: 14px;
+            color: #666;
+            margin-top: 15px;
+        }
+
+        p a {
+            color: #003366;
+            text-decoration: none;
+        }
+
+        p a:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .login-container {
+                padding: 15px;
+            }
+
+            h2 {
+                font-size: 20px;
+            }
+
+            input {
+                padding: 8px 8px 8px 35px;
+                font-size: 12px;
+            }
+
+            button {
+                font-size: 14px;
+                padding: 8px;
+            }
         }
     </style>
 </head>
 
 <body>
-    <div class="login-card">
-        <h5>Sign in to your account</h5>
-        <p>Please enter your name and password to log in.</p>
-        
-        <?php if (!empty($error)): ?>
-            <div class="alert alert-danger"><?= htmlspecialchars($error) ?></div>
-        <?php endif; ?>
-        
-        <form action="login.php" method="POST">
-            <!-- Username Field -->
-            <div class="mb-3 input-group">
-                <span class="input-group-text"><i class="fas fa-user"></i></span>
-                <input type="text" class="form-control" name="username" placeholder="Username" required>
+    <div class="login-container">
+        <h2>Login</h2>
+        <form method="post" action="login.php">
+            <div class="form-group">
+                <label for="email">Email</label>
+                <i class="fas fa-envelope"></i>
+                <input type="email" id="email" name="email" placeholder="Enter your email" required>
             </div>
-            <!-- Password Field -->
-            <div class="mb-3 input-group">
-                <span class="input-group-text"><i class="fas fa-lock"></i></span>
-                <input type="password" class="form-control" name="password" placeholder="Password" required>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <i class="fas fa-lock"></i>
+                <input type="password" id="password" name="password" placeholder="Enter your password" required>
             </div>
-            <!-- Forgot Password -->
-            <div class="forgot-password">
-                <a href="#">Forgot Password?</a>
-            </div>
-            <!-- Submit Button -->
-            <div class="d-grid">
-                <button type="submit" class="btn btn-primary" name="loginbtn">Login</button>
-            </div>
+            <button type="submit">Login</button>
         </form>
-        <div class="login-footer">
-            <p>Don't have an account yet? <a href="signup.php">Create an account</a></p>
-        </div>
+        <p>Don't have an account? <a href="register.php">Register</a></p>
     </div>
-
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-        crossorigin="anonymous"></script>
 </body>
 
 </html>

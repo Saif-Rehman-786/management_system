@@ -2,7 +2,7 @@
 $host = 'localhost';
 $user = 'root'; // Default MySQL username
 $pass = ''; // Default MySQL password
-$db = 'data'; // Replace with your database name
+$db = 'hospital_system'; // Replace with your database name
 
 $conn = new mysqli($host, $user, $pass, $db);
 

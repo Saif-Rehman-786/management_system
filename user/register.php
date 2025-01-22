@@ -1,5 +1,23 @@
 <?php
-include("dbconnection.php"); // Ensure this file contains your DB connection setup
+include("dbconnection.php");
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $name = $_POST['fname'];
+    $address = $_POST['address'];
+    $city = $_POST['city'];
+    $gender = $_POST['gen'];
+    $email = $_POST['email'];
+    $password = password_hash($_POST['pass'], PASSWORD_DEFAULT); // Secure password hashing
+
+    $query = "INSERT INTO patient (name, address, city, gender, email, password) 
+              VALUES ('$name', '$address', '$city', '$gender', '$email', '$password')";
+
+    if ($conn->query($query)) {
+        echo "<script>alert('Account created successfully!'); window.location.href = 'login.php';</script>";
+    } else {
+        echo "<script>alert('Error: " . $conn->error . "');</script>";
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -9,11 +27,8 @@ include("dbconnection.php"); // Ensure this file contains your DB connection set
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Patient Registration</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
-        integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        /* CSS Styling */
         body {
             font-family: Arial, sans-serif;
             margin: 0;
@@ -27,43 +42,39 @@ include("dbconnection.php"); // Ensure this file contains your DB connection set
 
         .container {
             background-color: #fff;
-            padding: 15px;
-            border-radius: 6px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-            width: 320px;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            width: 350px;
             max-width: 90%;
         }
 
         h2 {
             text-align: center;
-            margin-bottom: 15px;
             color: #003366;
-            font-size: 18px;
+            margin-bottom: 20px;
         }
 
         .form-group {
-            margin-bottom: 10px;
             position: relative;
+            margin-bottom: 15px;
         }
 
         label {
-            display: block;
-            margin-bottom: 3px;
+            font-size: 14px;
             font-weight: bold;
-            font-size: 12px;
             color: #003366;
+            display: block;
+            margin-bottom: 5px;
         }
 
-        .form-group input[type="text"],
-        .form-group input[type="email"],
-        .form-group input[type="password"],
-        .form-group select {
+        input, select {
             width: 100%;
-            padding: 8px 8px 8px 35px;
+            padding: 10px 10px 10px 35px;
             border: 1px solid #ccc;
-            border-radius: 4px;
+            border-radius: 5px;
+            font-size: 14px;
             box-sizing: border-box;
-            font-size: 12px;
         }
 
         .form-group i {
@@ -72,24 +83,27 @@ include("dbconnection.php"); // Ensure this file contains your DB connection set
             top: 65%;
             transform: translateY(-50%);
             color: #003366;
-            font-size: 14px;
+            font-size: 16px;
         }
 
-        #submitt {
+        button {
+            width: 100%;
+            padding: 10px;
             background-color: #003366;
             color: white;
-            padding: 8px 12px;
             border: none;
-            border-radius: 4px;
+            border-radius: 5px;
+            font-size: 16px;
             cursor: pointer;
-            width: 100%;
-            font-size: 14px;
+        }
+
+        button:hover {
+            background-color: #001f4d;
         }
 
         p {
-            margin-top: 10px;
-            font-size: 12px;
             text-align: center;
+            font-size: 14px;
             color: #666;
         }
 
@@ -101,38 +115,33 @@ include("dbconnection.php"); // Ensure this file contains your DB connection set
 
         p a:hover {
             text-decoration: underline;
-            color: #001f4d;
-        }
-
-        #submitt:hover {
-            background-color: #001f4d;
         }
     </style>
 </head>
 
 <body>
     <div class="container">
-        <h2>Patient Registration</h2>
+        <h2>Register as a Patient</h2>
         <form method="post" action="">
             <div class="form-group">
-                <label for="full_name">Full Name</label>
+                <label for="fname">Full Name</label>
                 <i class="fas fa-user"></i>
-                <input name="fname" type="text" id="full_name" placeholder="Enter your full name" required>
+                <input type="text" id="fname" name="fname" placeholder="Enter your full name" required>
             </div>
             <div class="form-group">
                 <label for="address">Address</label>
                 <i class="fas fa-map-marker-alt"></i>
-                <input name="address" type="text" id="address" placeholder="Enter your address" required>
+                <input type="text" id="address" name="address" placeholder="Enter your address" required>
             </div>
             <div class="form-group">
                 <label for="city">City</label>
                 <i class="fas fa-city"></i>
-                <input name="city" type="text" id="city" placeholder="Enter your city" required>
+                <input type="text" id="city" name="city" placeholder="Enter your city" required>
             </div>
             <div class="form-group">
-                <label for="gender">Gender</label>
+                <label for="gen">Gender</label>
                 <i class="fas fa-venus-mars"></i>
-                <select name="gen" id="gender" required>
+                <select id="gen" name="gen" required>
                     <option value="">Select Gender</option>
                     <option value="male">Male</option>
                     <option value="female">Female</option>
@@ -141,51 +150,22 @@ include("dbconnection.php"); // Ensure this file contains your DB connection set
             <div class="form-group">
                 <label for="email">Email</label>
                 <i class="fas fa-envelope"></i>
-                <input name="email" type="email" id="email" placeholder="Enter your email" required>
+                <input type="email" id="email" name="email" placeholder="Enter your email" required>
             </div>
             <div class="form-group">
-                <label for="password">Password</label>
+                <label for="pass">Password</label>
                 <i class="fas fa-lock"></i>
-                <input name="pass" type="password" id="password" placeholder="Enter your password" required>
+                <input type="password" id="pass" name="pass" placeholder="Enter your password" required>
             </div>
             <div class="form-group">
-                <label for="confirm_password">Confirm Password</label>
+                <label for="cpass">Confirm Password</label>
                 <i class="fas fa-lock"></i>
-                <input name="cpass" type="password" id="confirm_password" placeholder="Confirm your password" required>
+                <input type="password" id="cpass" name="cpass" placeholder="Confirm your password" required>
             </div>
-            <p>Already have an account? <a href="login.php">Login</a></p>
-            <input type="submit" name="sub" id="submitt">
+            <button type="submit">Register</button>
         </form>
+        <p>Already have an account? <a href="login.php">Login</a></p>
     </div>
-
-    <?php
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        $fname = trim($_POST['fname']);
-        $address = trim($_POST['address']);
-        $city = trim($_POST['city']);
-        $gender = $_POST['gen'];
-        $email = trim($_POST['email']);
-        $password = $_POST['pass'];
-        $confirm_password = $_POST['cpass'];
-
-        if ($password !== $confirm_password) {
-            echo "<script>alert('Passwords do not match. Please try again.');</script>";
-        } else {
-            $hashed_password = password_hash($password, PASSWORD_BCRYPT);
-
-            $stmt = $conn->prepare("INSERT INTO `user` (`name`, `address`, `city`, `gender`, `email`, `password`) VALUES (?, ?, ?, ?, ?, ?)");
-            $stmt->bind_param("ssssss", $fname, $address, $city, $gender, $email, $hashed_password);
-
-            if ($stmt->execute()) {
-                echo "<script>alert('Account created successfully!'); window.location.href='login.php';</script>";
-            } else {
-                echo "<script>alert('Error: Unable to register. Please try again later.');</script>";
-            }
-
-            $stmt->close();
-        }
-    }
-    ?>
 </body>
 
 </html>
