@@ -1,12 +1,6 @@
-
-
-
 <?php
 session_start();
 session_destroy();
-header("Location: ../../user/index.php");
+header("Location: doctor_login.php");
 exit;
 ?>
-
-
-

@@ -86,7 +86,7 @@
                 <span>
                   <i class="ti ti-user-plus"></i>
                 </span>
-                <span class="hide-menu">Register</span>
+                <span class="hide-menu">Logout</span>
               </a>
             </li>
             <li class="nav-small-cap">
