@@ -1,45 +1,47 @@
 <?php
-include("dbconnection.php");
+include("db_connect.php"); // Database connection
+
+// Start session to manage login
 session_start();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = $_POST['email'];
-    $password = $_POST['password'];
+    $password = $_POST['pass'];
 
-    // Fetch user from database
-    $query = "SELECT * FROM patient WHERE email = '$email'";
-    $result = $conn->query($query);
+    // Query to find the user by email
+    $query = "SELECT * FROM patients WHERE email = ?";
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param("s", $email);
+    $stmt->execute();
+    $result = $stmt->get_result();
 
+    // Check if user exists
     if ($result->num_rows > 0) {
         $user = $result->fetch_assoc();
+
         // Verify password
         if (password_verify($password, $user['password'])) {
-            $_SESSION['patient_id'] = $user['id'];
-            $_SESSION['patient_name'] = $user['name'];
-            header("Location: ../hms/html/index.php");
+            // Store user information in session
+            $_SESSION['patient_id'] = $user['id'];  // Make sure this matches the variable name in the booking page
+            $_SESSION['patient_name'] = $user['name'];  // If you want to store name too
+
+            // Redirect to user_panel/dashboard.php
+            header("Location: dashboard.php"); // Adjust the location if needed
             exit();
         } else {
             echo "<script>alert('Incorrect password.');</script>";
         }
     } else {
-        echo "<script>alert('Email not registered.');</script>";
+        echo "<script>alert('Email not found.');</script>";
     }
+
+    $stmt->close();
 }
 ?>
 
 
-
-
-
-
-
-
-
-
-
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -54,53 +56,44 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            background-color: #f4f4f4;
+            background-color: #f9f9f9;
         }
 
-        .login-container {
+        .container {
             background-color: #fff;
-            padding: 20px 25px;
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            width: 100%;
-            max-width: 400px;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            width: 350px;
+            max-width: 90%;
         }
 
         h2 {
             text-align: center;
             color: #003366;
-            font-size: 24px;
             margin-bottom: 20px;
         }
 
         .form-group {
-            margin-bottom: 20px;
             position: relative;
+            margin-bottom: 15px;
         }
 
         label {
-            display: block;
-            margin-bottom: 8px;
-            color: #003366;
             font-size: 14px;
             font-weight: bold;
+            color: #003366;
+            display: block;
+            margin-bottom: 5px;
         }
 
         input {
-            width: 85%;
-            padding: 10px 10px 10px 40px;
+            width: 100%;
+            padding: 10px;
             border: 1px solid #ccc;
             border-radius: 5px;
             font-size: 14px;
-        }
-
-        .form-group i {
-            position: absolute;
-            left: 10px;
-            top: 65%;
-            transform: translateY(-50%);
-            color: #003366;
-            font-size: 16px;
+            box-sizing: border-box;
         }
 
         button {
@@ -112,7 +105,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             border-radius: 5px;
             font-size: 16px;
             cursor: pointer;
-            transition: background-color 0.3s ease;
         }
 
         button:hover {
@@ -123,59 +115,36 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             text-align: center;
             font-size: 14px;
             color: #666;
-            margin-top: 15px;
         }
 
         p a {
             color: #003366;
             text-decoration: none;
+            font-weight: bold;
         }
 
         p a:hover {
             text-decoration: underline;
         }
-
-        /* Responsive adjustments */
-        @media (max-width: 768px) {
-            .login-container {
-                padding: 15px;
-            }
-
-            h2 {
-                font-size: 20px;
-            }
-
-            input {
-                padding: 8px 8px 8px 35px;
-                font-size: 12px;
-            }
-
-            button {
-                font-size: 14px;
-                padding: 8px;
-            }
-        }
     </style>
 </head>
-
 <body>
-    <div class="login-container">
+    <div class="container">
         <h2>Login</h2>
-        <form method="post" action="login.php">
+        <form method="post" action="">
             <div class="form-group">
                 <label for="email">Email</label>
                 <i class="fas fa-envelope"></i>
                 <input type="email" id="email" name="email" placeholder="Enter your email" required>
             </div>
             <div class="form-group">
-                <label for="password">Password</label>
+                <label for="pass">Password</label>
                 <i class="fas fa-lock"></i>
-                <input type="password" id="password" name="password" placeholder="Enter your password" required>
+                <input type="password" id="pass" name="pass" placeholder="Enter your password" required>
             </div>
             <button type="submit">Login</button>
         </form>
-        <p>Don't have an account? <a href="register.php">Register</a></p>
+        <p>Don't have an account? <a href="singup.php">Register</a></p>
     </div>
 </body>
-
 </html>

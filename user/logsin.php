@@ -144,7 +144,7 @@
                         </div>
                         <h4 class="mb-3">doctor</h4>
                         <p class="mb-4">Erat ipsum justo amet duo et elitr dolor, est duo duo eos lorem sed diam stet diam sed stet.</p>
-                        <a class="btn" href="doctor_login.php"><i class="fa fa-plus text-primary me-3"></i>Read More</a>
+                        <a class="btn" href="../hms/doctor/doctor_login.php"><i class="fa fa-plus text-primary me-3"></i>Read More</a>
                     </div>
                 </div>
                 
