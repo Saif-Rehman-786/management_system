@@ -1,20 +1,20 @@
 <?php
 session_start();
-include("db_connect.php"); // Database connection
+include("db_connect.php"); 
 
-// Check if patient_id exists in session
+
 if (!isset($_SESSION['patient_id']) || empty($_SESSION['patient_id'])) {
     die("Patient ID is not available. Please log in.");
 }
 
-$patient_id = $_SESSION['patient_id']; // Get patient_id from session
+$patient_id = $_SESSION['patient_id'];
 
-// Initialize form fields
+
 $appointment_date = $appointment_time = $doctor_id = $description = ''; 
 
-// Check if form is submitted
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Get form data and check if set
+   
     $appointment_date = $_POST['appointment_date'] ?? '';
     $appointment_time = $_POST['appointment_time'] ?? '';
     $doctor_id = $_POST['doctor_id'] ?? '';
@@ -24,15 +24,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (empty($appointment_date) || empty($appointment_time) || empty($doctor_id) || empty($description)) {
         $error_message = "All fields are required!";
     } else {
-        // Insert appointment into database
+       
         $query = "INSERT INTO appointments (patient_id, doctor_id, appointment_date, appointment_time, description) 
                   VALUES (?, ?, ?, ?, ?)";
         $stmt = $conn->prepare($query);
         $stmt->bind_param("iisss", $patient_id, $doctor_id, $appointment_date, $appointment_time, $description);
 
         if ($stmt->execute()) {
-            // Show success message and then redirect
-            echo "<script>alert('Appointment booked successfully!'); window.location.href = 'book_appointment.php';</script>";
+      
+            echo "<script>alert('Appointment booked successfully!'); window.location.href = 'history.php';</script>";
             exit();
         } else {
             $error_message = "Error: " . $conn->error;
@@ -41,20 +41,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->close();
     }
 }
-
-// Fetch patient appointments
-$query = "SELECT a.appointment_date, a.appointment_time, d.name AS doctor_name, a.description
-          FROM appointments a
-          JOIN doctors d ON a.doctor_id = d.id
-          WHERE a.patient_id = ?";
-$stmt = $conn->prepare($query);
-$stmt->bind_param("i", $patient_id);
-$stmt->execute();
-$result = $stmt->get_result();
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
+ 
+
 
 <head>
     <meta charset="UTF-8">
@@ -169,29 +161,7 @@ $result = $stmt->get_result();
             </div>
         </div>
 
-        <!-- Display Appointments -->
-        <div class="row mt-5">
-            <div class="col-md-12">
-                <div class="card p-4">
-                    <h3 class="card-title mb-3">Your Appointments</h3>
-                    <?php if ($result->num_rows > 0): ?>
-                        <ul class="appointments-list">
-                            <?php while ($row = $result->fetch_assoc()): ?>
-                                <li>
-                                    <strong>Doctor:</strong> <?php echo $row['doctor_name']; ?><br>
-                                    <strong>Date:</strong> <?php echo $row['appointment_date']; ?><br>
-                                    <strong>Time:</strong> <?php echo $row['appointment_time']; ?><br>
-                                    <strong>Description:</strong> <?php echo $row['description']; ?>
-                                </li>
-                            <?php endwhile; ?>
-                        </ul>
-                    <?php else: ?>
-                        <p>No appointments found.</p>
-                    <?php endif; ?>
-                </div>
-            </div>
-        </div>
-    </div>
+
 
     <footer class="text-center py-4">
         <p>&copy; 2025 Hospital Management System. All rights reserved.</p>
