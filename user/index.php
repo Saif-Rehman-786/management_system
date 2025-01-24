@@ -94,11 +94,11 @@
                         <a href="team.php" class="dropdown-item">Our Doctor</a>
                         <a href="../hms/login.php" class="dropdown-item">Appointment</a>
                         <a href="testimonial.php" class="dropdown-item">Testimonial</a>
-                        <a href="404.php" class="dropdown-item">404 Page</a>
+                        
                     </div>
                 </div>
                 <a href="contact.php" class="nav-item nav-link">Contact</a>
-                <a href="logsin.php" class="nav-item nav-link">Logins</a>
+
               
             </div>
             <a href="./login.php" class="btn btn-primary rounded-0 py-4 px-lg-5 d-none d-lg-block">Appointment<i class="fa fa-arrow-right ms-3"></i></a>
@@ -200,8 +200,8 @@
                         <div class="d-inline-flex align-items-center justify-content-center bg-white rounded-circle mb-4" style="width: 65px; height: 65px;">
                             <i class="fa fa-heartbeat text-primary fs-4"></i>
                         </div>
-                        <h4 class="mb-3">Cardiology</h4>
-                        <p class="mb-4">Erat ipsum justo amet duo et elitr dolor, est duo duo eos lorem sed diam stet diam sed stet.</p>
+                        <h4 class="mb-3">Arrhythmias</h4>
+                        <p class="mb-4"> Irregular heartbeats, such as atrial fibrillation or tachycardia.</p>
                         <a class="btn" href=""><i class="fa fa-plus text-primary me-3"></i>Read More</a>
                     </div>
                 </div>
@@ -210,8 +210,8 @@
                         <div class="d-inline-flex align-items-center justify-content-center bg-white rounded-circle mb-4" style="width: 65px; height: 65px;">
                             <i class="fa fa-x-ray text-primary fs-4"></i>
                         </div>
-                        <h4 class="mb-3">Pulmonary</h4>
-                        <p class="mb-4">Erat ipsum justo amet duo et elitr dolor, est duo duo eos lorem sed diam stet diam sed stet.</p>
+                        <h4 class="mb-3">Heart Failure</h4>
+                        <p class="mb-4">When the heart cannot pump blood effectively.</p>
                         <a class="btn" href=""><i class="fa fa-plus text-primary me-3"></i>Read More</a>
                     </div>
                 </div>
@@ -391,7 +391,7 @@
                             <img class="img-fluid" src="img/team-4.jpg" alt="">
                         </div>
                         <div class="team-text bg-light text-center p-4">
-                            <h5>Doctor Name</h5>
+                            <h5>Dr. Emily Davis</h5>
                             <p class="text-primary">Department</p>
                             <div class="team-social text-center">
                                 <a class="btn btn-square" href=""><i class="fab fa-facebook-f"></i></a>

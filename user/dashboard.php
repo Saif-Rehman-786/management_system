@@ -1,4 +1,14 @@
 
+<?php
+session_start();
+if (!isset($_SESSION['patient_id'])) {
+    header("Location: login.php");
+    exit();
+}
+header("Cache-Control: no-store, no-cache, must-revalidate");
+header("Pragma: no-cache");
+
+?>
 
 
 
@@ -117,10 +127,10 @@
 <body>
     <!-- Sidebar -->
     <div class="sidebar">
-        <a href="user_dashboard.php">Dashboard</a>
+        <a href="#">Dashboard</a>
         <a href="book_appointment.php">Book Appointment</a>
         <a href="history.php">Appointment History</a>
-        <a href="profile.php">Profile</a>
+
         <a href="logout.php" class="text-danger">Logout</a>
     </div>
 

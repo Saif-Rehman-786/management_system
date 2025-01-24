@@ -92,7 +92,7 @@
                         <a href="team.php" class="dropdown-item active">Our Doctor</a>
                         <a href="login.php" class="dropdown-item">Appointment</a>
                         <a href="testimonial.php" class="dropdown-item">Testimonial</a>
-                        <a href="404.php" class="dropdown-item">404 Page</a>
+                       
                     </div>
                 </div>
                 <a href="contact.php" class="nav-item nav-link">Contact</a>

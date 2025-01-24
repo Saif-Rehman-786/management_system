@@ -1,44 +1,52 @@
 <?php
 include("db_connect.php"); // Database connection
 
-// Start session to manage login
+// Start session
 session_start();
 
+// Prevent form resubmission after page refresh
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $email = $_POST['email'];
-    $password = $_POST['pass'];
+    $email = trim($_POST['email']);
+    $password = trim($_POST['pass']);
 
-    // Query to find the user by email
-    $query = "SELECT * FROM patients WHERE email = ?";
-    $stmt = $conn->prepare($query);
-    $stmt->bind_param("s", $email);
-    $stmt->execute();
-    $result = $stmt->get_result();
-
-    // Check if user exists
-    if ($result->num_rows > 0) {
-        $user = $result->fetch_assoc();
-
-        // Verify password
-        if (password_verify($password, $user['password'])) {
-            // Store user information in session
-            $_SESSION['patient_id'] = $user['id'];  // Make sure this matches the variable name in the booking page
-            $_SESSION['patient_name'] = $user['name'];  // If you want to store name too
-
-            // Redirect to user_panel/dashboard.php
-            header("Location: dashboard.php"); // Adjust the location if needed
-            exit();
-        } else {
-            echo "<script>alert('Incorrect password.');</script>";
-        }
+    // Validate input
+    if (empty($email) || empty($password)) {
+        echo "<script>alert('Please fill in all fields.');</script>";
     } else {
-        echo "<script>alert('Email not found.');</script>";
-    }
+        // Query to find the user by email
+        $query = "SELECT * FROM patients WHERE email = ?";
+        $stmt = $conn->prepare($query);
+        $stmt->bind_param("s", $email);
+        $stmt->execute();
+        $result = $stmt->get_result();
 
-    $stmt->close();
+        // Check if user exists
+        if ($result->num_rows > 0) {
+            $user = $result->fetch_assoc();
+
+            // Verify password
+            if (password_verify($password, $user['password'])) {
+                // Regenerate session ID for security
+                session_regenerate_id(true);
+
+                // Store user information in session
+                $_SESSION['patient_id'] = $user['id'];
+                $_SESSION['patient_name'] = $user['name'];
+
+                // Redirect to dashboard
+                header("Location: dashboard.php");
+                exit();
+            } else {
+                echo "<script>alert('Incorrect password.');</script>";
+            }
+        } else {
+            echo "<script>alert('Email not found.');</script>";
+        }
+
+        $stmt->close();
+    }
 }
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -129,9 +137,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </style>
 </head>
 <body>
-    <div class="container">
+<div class="container">
         <h2>Login</h2>
-        <form method="post" action="">
+        <form method="post" action="login.php">
             <div class="form-group">
                 <label for="email">Email</label>
                 <i class="fas fa-envelope"></i>
@@ -144,7 +152,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
             <button type="submit">Login</button>
         </form>
-        <p>Don't have an account? <a href="singup.php">Register</a></p>
+        <p>Don't have an account? <a href="signup.php">Register</a></p>
     </div>
 </body>
 </html>
